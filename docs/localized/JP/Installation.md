@@ -20,12 +20,12 @@ ML-Agents ツールキットはいくつかのコンポーネントを含みま�
 - `com.unity.ml-agents`Unity パッケージのインストール
 - `mlagents` Python パッケージのインストール
 
-### **Unity(バージョン 2018.4 以降)**のインストール
+### Unity(バージョン 2018.4 以降)のインストール
 
 Unity を[ダウンロード](https://unity3d.com/get-unity/download)してインストールしてください。
 Unity Hub を使用して Unity をインストールすることを強くお勧めします。Unity Hub は複数のバージョンの Unity を管理することが出来るからです。
 
-### **Python(バージョン 3.6.1 以降)**のインストール
+### Python(バージョン 3.6.1 以降)のインストール
 
 Python のバージョン 3.6 か 3.7 を[インストール](https://www.python.org/downloads/)することをお勧めします。
 もし Windows を使用しているなら、x86 バージョンではなく x86-64 バージョンをインストールしてください。
