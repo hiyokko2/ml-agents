@@ -7,4 +7,4 @@
 もし、[Unity エンジン](https://unity3d.com/unity)についてよく知らない場合は[予備知識: Unity](Background-Unity.md)ページを参考にしてください。
 加えて、機械学習についてよく知らない場合は[予備知識: 機械学習](Background-Machine-Learning.md)ページで簡単な概要を把握してください。
 
-![3D Balance Ball](images/balance.png)
+![3D Balance Ball](../../images/balance.png)
