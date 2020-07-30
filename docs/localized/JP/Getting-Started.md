@@ -61,6 +61,16 @@ Unity の言葉では、環境とは 1 つ以上のエージェントと、も�
 
 ![Platform Prefab](../../images/platform_prefab.png)
 
+1. プロジェクトウィンドウの`Assets/ML-Agents/Examples/3DBall/TFModels`フォルダにある**3DBall**モデルを、Agent ゲームオブジェクトのインスペクタウィンドウ内の`Behavior Parameters (Script)`にある`Model`プロパティにドラッグしてください。
+   ![3dball learning brain](../../images/3dball_learning_brain.png)
+
+1. ヒエラルキーウィンドウのそれぞれの`3DBall`の`Agent`のモデルが変わったことに注意してください。
+   翻訳中・・・
+
+1. このモデルで使用する**Inference Device(推論デバイス)**を`CPU`に設定します。
+
+1. Unity エディタの`再生`ボタンをクリックするとプラットフォームが学習済みモデルを使用してボールを落とさないように動作します。
+
 ## 強化学習による新しいモデルの訓練
 
 この環境のエージェント用に学習済みの`.nn`ファイルが提供されていますが、あなたが自分で作った環境では、新しいモデルファイルを生成するためにエージェントを一から訓練する必要があります。
