@@ -23,7 +23,9 @@
 その後、全ての環境例を含む Unity プロジェクトを開きます。
 
 1. Unity Hub を起動する
-   翻訳中・・・
+1. プロジェクトダイアログでウィンドウ上部の「リストに追加」をクリックする
+1. 開いたファイルダイアログで Ml-Agents ツールキット内の Project フォルダを選択し「開く」をクリックする
+1. Project ウィンドウで`Assets/ML-Agents/Examples/3DBall/Scenes`フォルダを開き、`3DBall`シーンを開く
 
 ## Unity 環境の理解
 
