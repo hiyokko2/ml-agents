@@ -36,7 +36,7 @@ Windows での Anaconda インストールはサポートしていませんが�
 ### (任意)ML-Agents ツールキットリポジトリのクローン
 
 Unity と Python をインストールしたので Unity と Python のパッケージをインストールできます。
-翻訳中・・・
+それらをインストールするためにリポジトリをクローンする必要はありませんが、サンプル環境や訓練設定をダウンロードして試したい場合は、クローンしても良いでしょう。(一部のチュートリアルとガイドはサンプルがダウンロードされていることを前提としています)
 
 ```sh
 git clone --branch release_4 https://github.com/Unity-Technologies/ml-agents.git
@@ -52,4 +52,24 @@ git clone --branch release_4 https://github.com/Unity-Technologies/ml-agents.git
 Unity ML-Agents C# SDK は Unity のパッケージです。`com.unity.ml-agents`パッケージは[パッケージマネージャーレジストリ](https://docs.unity3d.com/Manual/upm-ui-install.html)から直接インストールできます。
 このパッケージを見つけるために Advanced ドロップダウンの Preview Packages を有効にするのを忘れないでください。
 
-翻訳中・・・
+**注意:** ML-Agents がパッケージマネージャに表示されない場合は、[高度なインストール手順](#advanced-local-installation-for-development)に従ってください。
+
+### `mlagents`Python パッケージのインストール
+
+`mlagents`Python パッケージをインストールすると、`mlagents`が依存する他の Python パッケージもインストールされます。
+そのため、PC に古い依存関係が残っていると、インストールの問題が発生する可能性があります。
+したがって、我々のサポートする方針は、Python 仮想環境を利用することです。
+Python 仮想環境は各プロジェクトの依存関係を分離するメカニズムを提供し、Mac / Windows / Linux でサポートされています。
+我々は専用の[Python 仮想環境ガイド](Using-Virtual-Environment.md)を提供しています。
+
+`mlagents`Python パッケージをインストールするには、仮想環境をアクティブ化しコマンドラインで次のコマンドを実行してください。
+
+```sh
+pip3 install mlagents
+```
+
+このコマンドは、`mlagents`を PyPi からインストールします。クローンしたリポジトリからではないことに注意してください。
+インストールが成功すると`mlagents-learn --help`コマンドが実行できるはずです。実行すると`mlagents-learn`コマンドのオプションが表示されます。
+
+`mlagents`をインストールすると、[setup.py file](../ml-agents/setup.py)にリストされている依存関係もインストールされます。
+この依存関係には[TensorFlow](Background-TensorFlow.md)(Requires a CPU w/ AVX support)も含まれます。
