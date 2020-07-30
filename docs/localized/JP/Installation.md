@@ -73,3 +73,12 @@ pip3 install mlagents
 
 `mlagents`をインストールすると、[setup.py file](../ml-agents/setup.py)にリストされている依存関係もインストールされます。
 この依存関係には[TensorFlow](Background-TensorFlow.md)(Requires a CPU w/ AVX support)も含まれます。
+
+## 次のステップ
+
+[入門ガイド](Getting-Started.md)には Unity における ML-Agents のセットアップに関する短いチュートリアルが含まれています。また、学習済みモデルの実行や、訓練環境の構築に関するチュートリアルも含まれています。
+
+## ヘルプ
+
+ML-Agents に関する問題に直面した場合は[FAQ](FAQ.md)および[Limitations](Limitations.md)ページを参照してください。
+何も情報が見つからなかった場合は、[問題を送信](https://github.com/Unity-Technologies/ml-agents/issues)してください。この時、OS や Python バージョン、正確なエラーメッセージを可能な限り記述してください。
