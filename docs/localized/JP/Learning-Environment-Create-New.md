@@ -63,3 +63,54 @@ Unity プロジェクトウィンドウは下の画像のようになるはず�
        alt="The Target Cube in the Inspector window"
        width="400" border="10" />
 </p>
+
+### エージェントとしての球の追加
+
+1. ヒエラルキーウィンドウを右クリックし、3D オブジェクト > スフィアを選択します。
+1. 作成したスフィアの名前を RollerAgent にします。
+1. RollerAgent を選択し、インスペクタウィンドウを表示します。
+1. トランスフォームの位置を`(0, 0.5, 0)`、回転を`(0, 0, 0)`、拡大/縮小を`(1, 1, 1)`に設定します。
+1. コンポーネントを追加をクリックします。
+1. 物理 > リジッドボディを追加します。
+
+<p align="left">
+  <img src="../../images/roller-ball-agent.png"
+       alt="The Agent GameObject in the Inspector window"
+       width="400" border="10" />
+</p>
+
+上記のスクリーンショットには次のセクションで作成する Roller Agent スクリプトが表示されていることに注意してください。
+次に、作業を楽にするため、床、ターゲットキューブ、エージェントスフィアを空の GameObject の下にグループ化します。
+
+<p align="left">
+  <img src="../../images/roller-ball-hierarchy.png"
+       alt="The Hierarchy window"
+       width="250" border="10" />
+</p>
+
+1. ヒエラルキーウィンドウを右クリックし、空のオブジェクトを作成をクリックします。そして名前を TrainingArea に変更します。
+1. TrainingArea の位置が`(0,0,0)`、回転が`(0,0,0)`、拡大/縮小が`(1,1,1)`になるようにリセットします。
+1. ヒエラルキーの Floor、Target、RollerAgent を TrainingArea にドラッグします。
+
+## エージェントを実装する
+
+1. RollerAgent ゲームオブジェクトを選択してインスペクターウィンドウを表示します。
+1. コンポーネントを追加をクリックします。
+1. 一番下の新しいスクリプトをクリックします。
+1. スクリプトの名前を RollerAgent にします。
+1. 作成して追加をクリックします。
+
+次に、RollerAgent スクリプトを編集します。
+
+1. プロジェクトウィンドウで RollerAgent スクリプトをダブルクリックして開きます。
+1. エディタで`using Unity.MLAgents;`と`using Unity.MLAgents.Sensors;`を追加し、親クラスを`MonoBehaviour`から`Agent`に変更します。
+1. `Update()`メソッドを削除します。`Start()`メソッドは使用するので残します。
+
+ここまでは ML-Agents を Unity に追加する基本的な手順です。ここからは強化学習を使ってエージェントがキューブに向かうように学習するためのロジックを追加します。
+具体的には、Agent 基本クラスの 3 メソッドを実装する必要があります。
+
+- `OnEpisodeBegin()`
+- `CollectObservations(VectorSensor sensor)`
+- `OnActionReceived(float[] vectorAction)`
+
+これらのメソッドについて説明していきます。
