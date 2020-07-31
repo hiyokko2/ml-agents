@@ -18,3 +18,48 @@ Unity プロジェクトの ML-Agents ツールキットを使うためには、
 1. 作成したエージェントのサブクラスを適切なゲームオブジェクトに追加します。通常、シミュレーションでエージェントを表すオブジェクトに追加します。
 
 翻訳中・・・
+
+## Unity プロジェクトを設定する
+
+新しく Unity プロジェクトを作成し、ML-Agents アセットをインポートしましょう。
+
+1. Unity Hub を起動し RollerBall という名前の 3D プロジェクトを作成します
+1. プロジェクトに[ML-Agents Unity パッケージを追加します](Installation.md#install-the-comunityml-agents-unity-package)
+
+Unity プロジェクトウィンドウは下の画像のようになるはずです。
+
+<p align="left">
+  <img src="../../images/roller-ball-projects.png"
+       alt="Project window"
+       width="250" border="10" />
+</p>
+
+## 環境を作成する
+
+次に、学習環境として機能するシンプルなシーンを作成します。環境の物理コンポーネントは、エージェントが動き回るための床、ゴールとしてのキューブ、動き回るエージェントとしての球です。
+
+### 床を作成する
+
+1. ヒエラルキーウィンドウを右クリックし、3D オブジェクト > 平面を選択します。
+1. 作成した平面の名前を Floor にします。
+1. Floor を選択し、インスペクタウィンドウを表示します。
+1. トランスフォームの位置を`(0, 0, 0)`、回転を`(0, 0, 0)`、拡大/縮小を`(1, 1, 1)`に設定します。
+
+<p align="left">
+  <img src="../../images/roller-ball-floor.png"
+       alt="The Floor in the Inspector window"
+       width="400" border="10" />
+</p>
+
+### ゴールとしてのキューブを設置する
+
+1. ヒエラルキーウィンドウを右クリックし、3D オブジェクト > キューブを選択します。
+1. 作成したキューブの名前を Target にします。
+1. Target を選択し、インスペクタウィンドウを表示します。
+1. トランスフォームの位置を`(3, 0.5, 3)`、回転を`(0, 0, 0)`、拡大/縮小を`(1, 1, 1)`に設定します。
+
+<p align="left">
+  <img src="../../images/roller-ball-target.png"
+       alt="The Target Cube in the Inspector window"
+       width="400" border="10" />
+</p>
