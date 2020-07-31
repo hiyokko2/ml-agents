@@ -114,3 +114,51 @@ Unity プロジェクトウィンドウは下の画像のようになるはず�
 - `OnActionReceived(float[] vectorAction)`
 
 これらのメソッドについて説明していきます。
+
+### エージェントの初期化とリセット
+
+ML-Agents における訓練プロセスは、エージェント(球)がタスクを解決しようとするエピソードの実行を含みます。各エピソードはエージェント(球)がタスクを解決する(キューブに到達する)、失敗する(プラットフォームから落下する)、制限時間をオーバーするまで続きます。
+各エピソードの開始時に、`OnEpisodeBegin()`メソッドが呼ばれ、次のエピソード用の環境の準備をします。通常、エージェントがさまざまな条件下でタスクを解決できるようシーンはランダムに初期化されます。
+
+この例では、エージェント(球)がターゲット(キューブ)に到達するとエピソードが終了し、メソッドでターゲットはランダムな場所に移動します。さらに、エージェントがプラットフォームから落下すると`OnEpisodeBegin()`メソッドでエージェントを床の上に戻します。
+
+ターゲット(キューブ)を移動させるために、ターゲットの Transform への参照が必要です。Transform はゲームオブジェクトの位置、向き、拡大縮小率を格納したものです。
+Transform への参照を取得するために、`Transform`タイプのパブリックフィールドを RollerAgent クラスに用意します。Unity ではコンポーネントのパブリックフィールドはインスペクターウィンドウに表示され、Unity エディタでターゲットとして使用する GameObject を選択できます。
+
+エージェントの速度をリセットする(また後でエージェントを動かすために力を加える)ために Rigidbody コンポーネントへの参照が必要です。Unity の[Rigidbody](https://docs.unity3d.com/ScriptReference/Rigidbody.html)は物理シミュレーションのための主要な要素です。(詳しくは[Unity の物理](https://docs.unity3d.com/Manual/PhysicsSection.html)を参照してください。)Rigidbody コンポーネントは Agent スクリプトと同じゲームオブジェクト上にあるので、`GameObject.GetComponent<T>()`メソッドを使用して参照を取得できます。
+
+ここまでで、RollerAgent スクリプトは次のようになります。
+
+```csharp
+using System.Collections.Generic;
+using UnityEngine;
+using Unity.MLAgents;
+using Unity.MLAgents.Sensors;
+
+public class RollerAgent : Agent
+{
+    Rigidbody rBody;
+    void Start () {
+        rBody = GetComponent<Rigidbody>();
+    }
+
+    public Transform Target;
+    public override void OnEpisodeBegin()
+    {
+        if (this.transform.localPosition.y < 0)
+        {
+            // If the Agent fell, zero its momentum
+            this.rBody.angularVelocity = Vector3.zero;
+            this.rBody.velocity = Vector3.zero;
+            this.transform.localPosition = new Vector3( 0, 0.5f, 0);
+        }
+
+        // Move the target to a new spot
+        Target.localPosition = new Vector3(Random.value * 8 - 4,
+                                           0.5f,
+                                           Random.value * 8 - 4);
+    }
+}
+```
+
+続いて、`Agent.CollectObservations(VectorSensor sensor)`メソッドを実装しましょう。
