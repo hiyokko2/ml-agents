@@ -162,3 +162,103 @@ public class RollerAgent : Agent
 ```
 
 続いて、`Agent.CollectObservations(VectorSensor sensor)`メソッドを実装しましょう。
+
+### 環境の観測
+
+エージェントは情報を脳に送信し、脳は情報を意思決定のために使います。エージェントを訓練する(または学習済みのモデルを使う)と、データはニューラルネットワークに特徴ベクトルとして送られます。エージェントが学習タスクを成功させるには、正しい情報を供給する必要があります。どのような情報を収集するかの目安は、問題を解決するときに必要な情報を検討することです。
+
+今回の場合、ターゲットの位置、エージェントの位置、エージェントの速度が必要です。これらの情報によって、エージェントは自身のスピードをコントロールすることを学習しターゲットを行き過ぎないよう学習します。そしてプラットフォームから落ちないことも学習します。全体として、エージェントは以下の実装のように 8 つの値を観測します。
+
+```csharp
+public override void CollectObservations(VectorSensor sensor)
+{
+    // Target and Agent positions
+    sensor.AddObservation(Target.localPosition);
+    sensor.AddObservation(this.transform.localPosition);
+
+    // Agent velocity
+    sensor.AddObservation(rBody.velocity.x);
+    sensor.AddObservation(rBody.velocity.z);
+}
+```
+
+### 行動と報酬の割り当て
+
+Agent のコードの最後の部分は、行動を受け取り、報酬を割り当てる`Agent.OnActionReceived()` メソッドです。
+
+#### 行動
+
+ターゲットに向かって移動する今回のタスクを解決するために、エージェント(球)は X 方向と Z 方向に移動できる必要があります。そのため、エージェントには 2 つのアクションを設定します。1 つ目のアクションは X 方向に加えられる力を決定し、2 つ目のアクションは Z 方向に加えられる力を決定します。(もしエージェントが 3 次元の動きを許されているなら、3 つ目のアクションが必要でしょう)
+
+RollerAgent は`action[]`配列の値を、Rigidbody コンポーネントの`Rigidbody.AddForce`関数を使用して適用します。
+
+```csharp
+Vector3 controlSignal = Vector3.zero;
+controlSignal.x = action[0];
+controlSignal.z = action[1];
+rBody.AddForce(controlSignal * forceMultiplier);
+```
+
+#### 報酬
+
+強化学習には報酬が必要です。報酬は`OnActionReceived()`関数で割り当てます。学習アルゴリズムはエージェントに割り当てられた報酬を使用して、学習中エージェントに最適なアクションを提供しているか判断します。割り当てられたタスクを完了したエージェントに報酬を与えるため、ターゲットに到達したエージェントには 1.0 の報酬を与えます。
+
+RollerAgent はターゲットへの到達を検知します。到達したら`Agent.SetReward()`メソッドを呼び出し 1.0 の報酬を割り当てます。そして`EndEpisode()`メソッドを使用して 1 回のエピソードを終了します。
+
+```csharp
+float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
+// Reached target
+if (distanceToTarget < 1.42f)
+{
+    SetReward(1.0f);
+    EndEpisode();
+}
+```
+
+最後に、エージェントがプラットフォームから落下した場合、リセットのためにエピソードを終了します。
+
+```csharp
+// Fell off platform
+if (this.transform.localPosition.y < 0)
+{
+    EndEpisode();
+}
+```
+
+#### OnActionReceived()
+
+上記のアクションと報酬のロジックにより、最終的な`OnActionReceived()`関数は次のようになります。
+
+```csharp
+public float forceMultiplier = 10;
+public override void OnActionReceived(float[] vectorAction)
+{
+    // Actions, size = 2
+    Vector3 controlSignal = Vector3.zero;
+    controlSignal.x = vectorAction[0];
+    controlSignal.z = vectorAction[1];
+    rBody.AddForce(controlSignal * forceMultiplier);
+
+    // Rewards
+    float distanceToTarget = Vector3.Distance(this.transform.localPosition, Target.localPosition);
+
+    // Reached target
+    if (distanceToTarget < 1.42f)
+    {
+        SetReward(1.0f);
+        EndEpisode();
+    }
+
+    // Fell off platform
+    if (this.transform.localPosition.y < 0)
+    {
+        EndEpisode();
+    }
+}
+```
+
+翻訳中・・・
+
+## 環境のテスト
+
+翻訳中・・・
