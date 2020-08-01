@@ -261,4 +261,58 @@ public override void OnActionReceived(float[] vectorAction)
 
 ## 環境のテスト
 
-翻訳中・・・
+最初にキーボードでエージェントを動かして環境をテストするのは良いアイデアです。そのためには`RollerAgent`クラスの`Heuristic()`メソッドを拡張する必要があります。
+
+## 最後のエディタ設定
+
+これで、全てのゲームオブジェクトと ML-Agent コンポーネントが配置されたので、Unity エディタで全てを接続します。エージェントのコードと互換性を持たせるため、いくつかのエージェントのプロパティを変更します。
+
+1. RollerAgent ゲームオブジェクトを選択し、インスペクターウィンドウにプロパティを表示します。
+1. 「コンポーネントを追加」ボタンから`Decision Requester`スクリプトを追加します。
+1. **Decision Period**を 10 に変更します。詳しい情報は[Agent ドキュメント](Learning-Environment-Design-Agents.md#decisions)を参考にしてください。
+1. Target ゲームオブジェクトをヒエラルキーウィンドウから RollerAgent のターゲットフィールドにドラッグしてください。
+1. 「コンポーネントを追加」ボタンから`Behavior Parameters`スクリプトを追加します。
+1. エージェントの Behavior Parameters を以下のように変更します。
+
+- `Behavior Name` を _RollerBall_
+- `Vector Observation` > `Space Size` = 8
+- `Vector Action` > `Space Type` = **Continuous**
+- `Vector Action` > `Space Size` = 2
+
+これで訓練の前に環境をテストする準備が整いました。
+
+## 環境の訓練
+
+プロセスは[入門ガイド](Getting-Started.md)で説明されたものと同じです。
+
+訓練のハイパーパラメータは`mlagents-learn`コマンドに渡される設定ファイルで指定されます。`rollerball_config.yaml`ファイルを作成し、以下のハイパーパラメータを記述してください。
+
+```yml
+behaviors:
+  RollerBall:
+    trainer_type: ppo
+    hyperparameters:
+      batch_size: 10
+      buffer_size: 100
+      learning_rate: 3.0e-4
+      beta: 5.0e-4
+      epsilon: 0.2
+      lambd: 0.99
+      num_epoch: 3
+      learning_rate_schedule: linear
+    network_settings:
+      normalize: false
+      hidden_units: 128
+      num_layers: 2
+    reward_signals:
+      extrinsic:
+        gamma: 0.99
+        strength: 1.0
+    max_steps: 500000
+    time_horizon: 64
+    summary_freq: 10000
+```
+
+ハイパーパラメータについては[訓練設定ファイルのドキュメント](Training-Configuration-File.md)で説明されています。
+
+この例では、少数の入出力を含むとてもシンプルな訓練環境を作成しているため、小さなバッチサイズとバッファーサイズを使用することで、訓練を大幅にスピードアップできます。
